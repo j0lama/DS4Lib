@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -pedantic -ansi
+CFLAGS = -Wall -Wextra -ansi
 
 EXE = ds4_sample
 

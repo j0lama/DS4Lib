@@ -97,9 +97,9 @@ int ds4_update_status(DS4_CONTROLLER * ds4, char * data)
 	if(ds4 == NULL)
 		return ERROR;
 	c = ds4->c;
-	int button_value, status, type, dpad_value1, dpad_value2; /*type 1 = common button; type 2 = dpad and other*/
+	int button_value, status, type; /*type 1 = common button; type 2 = dpad and other*/
 	unsigned char *rawdata = (unsigned char *)data;
-	unsigned int trigger;
+	unsigned int trigger, dpad_value1, dpad_value2;
 	if(c == NULL || rawdata == NULL)
 	{
 		return ERROR;
@@ -412,37 +412,33 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 {
 	char barL2[20], barR2[20];
 	int i;
-	controller * c;
 	if(ds4 == NULL)
-		return ERROR;
-	c = ds4->c;
-	if(c == NULL)
 		return ERROR;
 	system("clear");
 	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sJON LARREA%s\n", YELLOW, RESET);
 	printf("ACTION BUTTONS:\n");
-	if(button_pressed(c, CROSS) == PRESSED)
+	if(button_pressed(ds4, CROSS) == PRESSED)
 	{
 		printf("      CROSS %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      CROSS %sNOT PRESSED%s\n", RED, RESET);
 
-	if(button_pressed(c, SQUARE) == PRESSED)
+	if(button_pressed(ds4, SQUARE) == PRESSED)
 	{
 		printf("      SQUARE %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      SQUARE %sNOT PRESSED%s\n", RED, RESET);
 
-	if(button_pressed(c, CIRCLE) == PRESSED)
+	if(button_pressed(ds4, CIRCLE) == PRESSED)
 	{
 		printf("      CIRCLE %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      CIRCLE %sNOT PRESSED%s\n", RED, RESET);
 
-	if(button_pressed(c, TRIANGLE) == PRESSED)
+	if(button_pressed(ds4, TRIANGLE) == PRESSED)
 	{
 		printf("      TRIANGLE %sPRESSED%s\n", GREEN, RESET);
 	}
@@ -450,14 +446,14 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 		printf("      TRIANGLE %sNOT PRESSED%s\n", RED, RESET);
 
 	printf("\nL AND R BUTTONS:\n");
-	if(button_pressed(c, L1) == PRESSED)
+	if(button_pressed(ds4, L1) == PRESSED)
 	{
 		printf("      L1 %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      L1 %sNOT PRESSED%s\n", RED, RESET);
 	
-	if(button_pressed(c, R1) == PRESSED)
+	if(button_pressed(ds4, R1) == PRESSED)
 	{
 		printf("      R1 %sPRESSED%s\n", GREEN, RESET);
 	}
@@ -468,7 +464,7 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 	{
 		barL2[i] = '\0';
 	}
-	for(i = 0; i < button_pressed(c, L2); i++)
+	for(i = 0; i < button_pressed(ds4, L2); i++)
 	{
 		barL2[i] = '*';
 	}
@@ -480,7 +476,7 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 	{
 		barR2[i] = '\0';
 	}
-	for(i = 0; i < button_pressed(c, R2); i++)
+	for(i = 0; i < button_pressed(ds4, R2); i++)
 	{
 		barR2[i] = '*';
 	}
@@ -488,14 +484,14 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 
 	printf("      R2 %s%s%s\n", GREEN,barR2, RESET);
 
-	if(button_pressed(c, L3) == PRESSED)
+	if(button_pressed(ds4, L3) == PRESSED)
 	{
 		printf("      L3 %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      L3 %sNOT PRESSED%s\n", RED, RESET);
 
-	if(button_pressed(c, R3) == PRESSED)
+	if(button_pressed(ds4, R3) == PRESSED)
 	{
 		printf("      R3 %sPRESSED%s\n", GREEN, RESET);
 	}
@@ -503,19 +499,19 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 		printf("      R3 %sNOT PRESSED%s\n", RED, RESET);
 
 	printf("\nSPECIAL BUTTONS:\n");
-	if(button_pressed(c, SHARE) == PRESSED)
+	if(button_pressed(ds4, SHARE) == PRESSED)
 	{
 		printf("      SHARE %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      SHARE %sNOT PRESSED%s\n", RED, RESET);
-	if(button_pressed(c, OPTIONS) == PRESSED)
+	if(button_pressed(ds4, OPTIONS) == PRESSED)
 	{
 		printf("      OPTIONS %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      OPTIONS %sNOT PRESSED%s\n", RED, RESET);
-	if(button_pressed(c, PSN) == PRESSED)
+	if(button_pressed(ds4, PSN) == PRESSED)
 	{
 		printf("      PSN %sPRESSED%s\n", GREEN, RESET);
 	}
@@ -524,25 +520,25 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 
 
 	printf("\nDPAD:\n");
-	if(button_pressed(c, UP) == PRESSED)
+	if(button_pressed(ds4, UP) == PRESSED)
 	{
 		printf("      UP %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      UP %sNOT PRESSED%s\n", RED, RESET);
-	if(button_pressed(c, DOWN) == PRESSED)
+	if(button_pressed(ds4, DOWN) == PRESSED)
 	{
 		printf("      DOWN %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      DOWN %sNOT PRESSED%s\n", RED, RESET);
-	if(button_pressed(c, LEFT) == PRESSED)
+	if(button_pressed(ds4, LEFT) == PRESSED)
 	{
 		printf("      LEFT %sPRESSED%s\n", GREEN, RESET);
 	}
 	else
 		printf("      LEFT %sNOT PRESSED%s\n", RED, RESET);
-	if(button_pressed(c, RIGHT) == PRESSED)
+	if(button_pressed(ds4, RIGHT) == PRESSED)
 	{
 		printf("      RIGHT %sPRESSED%s\n", GREEN, RESET);
 	}

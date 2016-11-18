@@ -5,45 +5,36 @@
 /*****************************************/
 
 #include <linux/input.h>
-#include <fcntl.h>
 #include <fcntl.h> 
 #include <stdio.h> 
 #include <string.h>
 #include <unistd.h>
-#include "buttons.h"
-#include "controller.h"
 #include "ds4.h"
-
-
-void print_hex_memory(void *mem) {
-  int i;
-  unsigned char *p = (unsigned char *)mem;
-  for (i=0;i<8;i++) {
-    printf("%02x ", p[i]);
-  }
-  printf("\n");
-}
 
 
 int main()
 {
-	char cadena[20], basura[1000];
+	char rawdata[20], pre_data[1000];
 	int fd;
-	controller * c;
+	DS4_CONTROLLER * ds4;
+	/*IN MY CASE THE FILE IS js0*/
 	if ((fd = open("/dev/input/js0", O_RDONLY)) < 0) {
 	    perror("evdev open");
 	    return 1;
 	}
 
-	c = ini_controller();
+	ds4 = ini_DS4();
+	if(ds4 == NULL)
+		return 1;
 
-	read(fd, basura, sizeof(basura));
+	read(fd, rawdata, sizeof(pre_data));
 	while(1) {
-	    read(fd, cadena, sizeof(cadena));
-	    ds4_update_status(c, cadena);
-	    ds4_print_status(c);
-	    /*print_hex_memory(cadena);*/
+	    read(fd, rawdata, sizeof(rawdata));
+	    ds4_update_status(ds4, rawdata);
+	    ds4_print_status(ds4);
 	}
+	free_DS4(ds4);
+	close(fd);
 
 	return 0;
 }
