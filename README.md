@@ -2,7 +2,7 @@
 Introduction
 -------------
 
-This is a simple C library to control the Dualshock 4 through USB.
+This is a simple Linux library writted to control the Dualshock 4 through USB.
 
 This library read the data from a temporal file created in /dev/input/ when you plug the DS4.
 
