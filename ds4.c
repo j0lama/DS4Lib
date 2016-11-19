@@ -415,7 +415,7 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 	if(ds4 == NULL)
 		return ERROR;
 	system("clear");
-	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sJON LARREA%s\n", YELLOW, RESET);
+	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sj0lama%s\n", YELLOW, RESET);
 	printf("ACTION BUTTONS:\n");
 	if(button_pressed(ds4, CROSS) == PRESSED)
 	{
