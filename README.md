@@ -6,13 +6,13 @@ This is a simple Linux library writted to control the Dualshock 4 through USB.
 
 This library read the data from a temporal file created in /dev/input/ when you plug the DS4.
 
-Funtions
+Functions
 -----------
 All functions are in ds4.h.
 
 Include this file to your proyect to can use DS4Lib.
 
-  **Funtions:**
+  **Functions:**
   
 - *DS4_CONTROLLER * ini_DS4();*
 
