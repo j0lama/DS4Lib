@@ -1,4 +1,4 @@
-# DS4Lib 0.5
+# DS4Lib 0.9
 Introduction
 -------------
 
@@ -24,17 +24,31 @@ Include this file to your proyect to can use DS4Lib.
 
 - *int ds4_print_status(DS4_CONTROLLER * ds4);*
 
+- *int ds4_get_joyL_hor(DS4_CONTROLLER * ds4);*
+- *int ds4_get_joyL_ver(DS4_CONTROLLER * ds4);*
+- *int ds4_get_joyR_hor(DS4_CONTROLLER * ds4);*
+- *int ds4_get_joyR_ver(DS4_CONTROLLER * ds4);*
+
 This version
 -----------
-DS4Lib 0.5 supports all buttons except Joysticks positions and touchPAD tracking.
+DS4Lib 0.9 adds Joysticks tracking. You can get the value of Joysticks axises. 
 
-In future versions DS4Lib will include tracking of Joysticks and touchPAD and gyroscope/accelerometer values in real time.
+In future versions DS4Lib will include tracking of touchPAD and gyroscope/accelerometer values in real time.
 
 Changelog
 ---------
+DS4Lib 0.9: Add Joystick tracking.
+
+- Tracking of all buttons and Joysticks.
+
+
 DS4Lib 0.5: Initial release.
 
 - Tracking of all buttons.
 
 
+Contributors
+----------
+
+j0lama: Buttons and Joysticks traking.
 
