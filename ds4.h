@@ -33,7 +33,7 @@
 #define NO_PRESSED 0
 
 #define OK 0
-#define ERROR -1
+#define ERROR -10
 
 typedef struct _DS4_CONTROLLER DS4_CONTROLLER;
 
@@ -46,11 +46,21 @@ int free_DS4(DS4_CONTROLLER * ds4);
 /*Returns PRESSED or NO_PRESSED in case of common button o in case of button with variable states returns the current state*/
 int button_pressed(DS4_CONTROLLER * ds4, int Button);
 
+
+/*With this functions you can get the joysticks axes positions*/
+int ds4_get_joyL_hor(DS4_CONTROLLER * ds4);
+int ds4_get_joyL_ver(DS4_CONTROLLER * ds4);
+int ds4_get_joyR_hor(DS4_CONTROLLER * ds4);
+int ds4_get_joyR_ver(DS4_CONTROLLER * ds4);
+
 /*Updates the current status of all buttons through the string rawdata*/
 int ds4_update_status(DS4_CONTROLLER * ds4, char * data);
 
-/*Prints the current values of the DS4 Controller*/
-int ds4_print_status(DS4_CONTROLLER * ds4);
+/*Prints the current values of the DS4 Controller Buttons*/
+int ds4_print_buttons(DS4_CONTROLLER * ds4);
+
+/*Prints the current values of the DS4 Controller Joysticks*/
+int ds4_print_joysticks(DS4_CONTROLLER * ds4);
 
 
 #endif

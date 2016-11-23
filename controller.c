@@ -61,6 +61,8 @@ struct _controller
 	button * buttons[BUTTONS_NUMBER];
 	button * dpad[4];
 	button * trigger[2];
+	button * joystickL[2]; /*0 -> X, 1 -> Y*/
+	button * joystickR[2]; /*0 -> X, 1 -> Y*/
 };
 
 controller * ini_controller()
@@ -89,6 +91,13 @@ controller * ini_controller()
 	c->trigger[L2_POS] = ini_button(L2);
 	c->trigger[R2_POS] = ini_button(R2);
 
+	c->joystickL[0] = ini_button(40);
+	c->joystickL[1] = ini_button(41);
+
+	c->joystickR[0] = ini_button(50);
+	c->joystickR[1] = ini_button(51);
+
+
 	return c;
 }
 
@@ -108,6 +117,14 @@ int free_controller(controller * c)
 	for(i = 0; i < 2; i++)
 	{
 		free_button(c->trigger[i]);
+	}
+	for(i = 0; i < 2; i++)
+	{
+		free_button(c->joystickL[i]);
+	}
+	for(i = 0; i < 2; i++)
+	{
+		free_button(c->joystickR[i]);
 	}
 	free(c);
 	return OK;
@@ -169,4 +186,72 @@ button * controller_get_button(controller * c, int Button)
 		return NULL;
 	return c->trigger[pos];
 
+}
+
+
+
+
+int controller_set_joyL_hor(controller * c, int value)
+{
+	if(c == NULL)
+		return ERROR;
+	button_set_status(c->joystickL[0], value);
+	return OK;
+}
+
+int controller_set_joyL_ver(controller * c, int value)
+{
+	if(c == NULL)
+		return ERROR;
+	button_set_status(c->joystickL[1], value);
+	return OK;
+}
+
+
+int controller_set_joyR_hor(controller * c, int value)
+{
+	if(c == NULL)
+		return ERROR;
+	button_set_status(c->joystickR[0], value);
+	return OK;
+}
+
+int controller_set_joyR_ver(controller * c, int value)
+{
+	if(c == NULL)
+		return ERROR;
+	button_set_status(c->joystickR[1], value);
+	return OK;
+}
+
+
+
+
+int controller_get_joyL_hor(controller * c)
+{
+	if(c == NULL)
+		return ERROR;
+	return button_get_status(c->joystickL[0]);
+}
+
+int controller_get_joyL_ver(controller * c)
+{
+	if(c == NULL)
+		return ERROR;
+	return button_get_status(c->joystickL[1]);
+}
+
+
+int controller_get_joyR_hor(controller * c)
+{
+	if(c == NULL)
+		return ERROR;
+	return button_get_status(c->joystickR[0]);
+}
+
+int controller_get_joyR_ver(controller * c)
+{
+	if(c == NULL)
+		return ERROR;
+	return button_get_status(c->joystickR[1]);
 }

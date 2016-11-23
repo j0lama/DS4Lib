@@ -90,6 +90,34 @@ int button_pressed(DS4_CONTROLLER * ds4, int Button)
 	return button_get_status(b);
 }
 
+int ds4_get_joyL_hor(DS4_CONTROLLER * ds4)
+{
+	if(ds4 == NULL || ds4->c == NULL)
+		return ERROR;
+	return controller_get_joyL_hor(ds4->c);
+}
+
+int ds4_get_joyL_ver(DS4_CONTROLLER * ds4)
+{
+	if(ds4 == NULL || ds4->c == NULL)
+		return ERROR;
+	return controller_get_joyL_ver(ds4->c);
+}
+
+int ds4_get_joyR_hor(DS4_CONTROLLER * ds4)
+{
+	if(ds4 == NULL || ds4->c == NULL)
+		return ERROR;
+	return controller_get_joyR_hor(ds4->c);
+}
+
+int ds4_get_joyR_ver(DS4_CONTROLLER * ds4)
+{
+	if(ds4 == NULL || ds4->c == NULL)
+		return ERROR;
+	return controller_get_joyR_ver(ds4->c);
+}
+
 int ds4_update_status(DS4_CONTROLLER * ds4, char * data)
 {
 	button * b;
@@ -402,13 +430,355 @@ int ds4_update_status(DS4_CONTROLLER * ds4, char * data)
 				button_set_status(b, 7);
 			}
 		}
+		else if(button_value == 0) /*L JOYSTICK HORIZONTAL*/
+		{
+			status = rawdata[5];
+			if(status == 0)
+			{
+				controller_set_joyL_hor(c, 0);
+			}
+			else if(status < 16)
+			{
+				controller_set_joyL_hor(c, 1);
+			}
+			else if(status < 32)
+			{
+				controller_set_joyL_hor(c, 2);
+			}
+			else if(status < 48)
+			{
+				controller_set_joyL_hor(c, 3);
+			}
+			else if(status < 64)
+			{
+				controller_set_joyL_hor(c, 4);
+			}
+			else if(status < 80)
+			{
+				controller_set_joyL_hor(c, 5);
+			}
+			else if(status < 96)
+			{
+				controller_set_joyL_hor(c, 6);
+			}
+			else if(status < 112)
+			{
+				controller_set_joyL_hor(c, 7);
+			}
+			else if(status < 128)
+			{
+				controller_set_joyL_hor(c, 8);
+			}
+			else if(status < 144)
+			{
+				controller_set_joyL_hor(c, -8);
+			}
+			else if(status < 160)
+			{
+				controller_set_joyL_hor(c, -7);
+			}
+			else if(status < 176)
+			{
+				controller_set_joyL_hor(c, -6);
+			}
+			else if(status < 192)
+			{
+				controller_set_joyL_hor(c, -5);
+			}
+			else if(status < 208)
+			{
+				controller_set_joyL_hor(c, -4);
+			}
+			else if(status < 224)
+			{
+				controller_set_joyL_hor(c, -3);
+			}
+			else if(status < 240)
+			{
+				controller_set_joyL_hor(c, -2);
+			}
+			else if(status < 256)
+			{
+				controller_set_joyL_hor(c, -1);
+			}
+		}
+		else if(button_value == 1) /*L JOYSTICK VERTICAL*/
+		{
+			status = rawdata[5];
+			if(status == 0)
+			{
+				controller_set_joyL_ver(c, 0);
+			}
+			else if(status < 16)
+			{
+				controller_set_joyL_ver(c, 1);
+			}
+			else if(status < 32)
+			{
+				controller_set_joyL_ver(c, 2);
+			}
+			else if(status < 48)
+			{
+				controller_set_joyL_ver(c, 3);
+			}
+			else if(status < 64)
+			{
+				controller_set_joyL_ver(c, 4);
+			}
+			else if(status < 80)
+			{
+				controller_set_joyL_ver(c, 5);
+			}
+			else if(status < 96)
+			{
+				controller_set_joyL_ver(c, 6);
+			}
+			else if(status < 112)
+			{
+				controller_set_joyL_ver(c, 7);
+			}
+			else if(status < 128)
+			{
+				controller_set_joyL_ver(c, 8);
+			}
+			else if(status < 144)
+			{
+				controller_set_joyL_ver(c, -8);
+			}
+			else if(status < 160)
+			{
+				controller_set_joyL_ver(c, -7);
+			}
+			else if(status < 176)
+			{
+				controller_set_joyL_ver(c, -6);
+			}
+			else if(status < 192)
+			{
+				controller_set_joyL_ver(c, -5);
+			}
+			else if(status < 208)
+			{
+				controller_set_joyL_ver(c, -4);
+			}
+			else if(status < 224)
+			{
+				controller_set_joyL_ver(c, -3);
+			}
+			else if(status < 240)
+			{
+				controller_set_joyL_ver(c, -2);
+			}
+			else if(status < 256)
+			{
+				controller_set_joyL_ver(c, -1);
+			}
+		}
+
+
+
+
+
+		else if(button_value == 2) /*R JOYSTICK HORIZONTAL*/
+		{
+			status = rawdata[5];
+			if(status == 0)
+			{
+				controller_set_joyR_hor(c, 0);
+			}
+			else if(status < 16)
+			{
+				controller_set_joyR_hor(c, 1);
+			}
+			else if(status < 32)
+			{
+				controller_set_joyR_hor(c, 2);
+			}
+			else if(status < 48)
+			{
+				controller_set_joyR_hor(c, 3);
+			}
+			else if(status < 64)
+			{
+				controller_set_joyR_hor(c, 4);
+			}
+			else if(status < 80)
+			{
+				controller_set_joyR_hor(c, 5);
+			}
+			else if(status < 96)
+			{
+				controller_set_joyR_hor(c, 6);
+			}
+			else if(status < 112)
+			{
+				controller_set_joyR_hor(c, 7);
+			}
+			else if(status < 128)
+			{
+				controller_set_joyR_hor(c, 8);
+			}
+			else if(status < 144)
+			{
+				controller_set_joyR_hor(c, -8);
+			}
+			else if(status < 160)
+			{
+				controller_set_joyR_hor(c, -7);
+			}
+			else if(status < 176)
+			{
+				controller_set_joyR_hor(c, -6);
+			}
+			else if(status < 192)
+			{
+				controller_set_joyR_hor(c, -5);
+			}
+			else if(status < 208)
+			{
+				controller_set_joyR_hor(c, -4);
+			}
+			else if(status < 224)
+			{
+				controller_set_joyR_hor(c, -3);
+			}
+			else if(status < 240)
+			{
+				controller_set_joyR_hor(c, -2);
+			}
+			else if(status < 256)
+			{
+				controller_set_joyR_hor(c, -1);
+			}
+		}
+		else if(button_value == 5) /*R JOYSTICK VERTICAL*/
+		{
+			status = rawdata[5];
+			if(status == 0)
+			{
+				controller_set_joyR_ver(c, 0);
+			}
+			else if(status < 16)
+			{
+				controller_set_joyR_ver(c, 1);
+			}
+			else if(status < 32)
+			{
+				controller_set_joyR_ver(c, 2);
+			}
+			else if(status < 48)
+			{
+				controller_set_joyR_ver(c, 3);
+			}
+			else if(status < 64)
+			{
+				controller_set_joyR_ver(c, 4);
+			}
+			else if(status < 80)
+			{
+				controller_set_joyR_ver(c, 5);
+			}
+			else if(status < 96)
+			{
+				controller_set_joyR_ver(c, 6);
+			}
+			else if(status < 112)
+			{
+				controller_set_joyR_ver(c, 7);
+			}
+			else if(status < 128)
+			{
+				controller_set_joyR_ver(c, 8);
+			}
+			else if(status < 144)
+			{
+				controller_set_joyR_ver(c, -8);
+			}
+			else if(status < 160)
+			{
+				controller_set_joyR_ver(c, -7);
+			}
+			else if(status < 176)
+			{
+				controller_set_joyR_ver(c, -6);
+			}
+			else if(status < 192)
+			{
+				controller_set_joyR_ver(c, -5);
+			}
+			else if(status < 208)
+			{
+				controller_set_joyR_ver(c, -4);
+			}
+			else if(status < 224)
+			{
+				controller_set_joyR_ver(c, -3);
+			}
+			else if(status < 240)
+			{
+				controller_set_joyR_ver(c, -2);
+			}
+			else if(status < 256)
+			{
+				controller_set_joyR_ver(c, -1);
+			}
+		}
+
+
 	}
 	return 0;
 
 
 }
 
-int ds4_print_status(DS4_CONTROLLER * ds4)
+int ds4_print_joysticks(DS4_CONTROLLER * ds4)
+{
+	int i, j, x, y;
+	char matriz[17][18];
+	if(ds4 == NULL)
+		return ERROR;
+	system("clear");
+	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sj0lama%s\n", YELLOW, RESET);
+	printf("%sJOYSTICKS DEMO%s\n", YELLOW, RESET);
+	printf("%s    Left Stick%s\n", BLUE, RESET);
+	for(i = 0; i < 17; i++)
+	{
+		for (j = 0; j < 17; j++)
+		{
+			matriz[i][j] = ' ';
+		}
+		matriz[i][17] = '\0';
+	}
+	matriz[8][8] = '+';
+	x = ds4_get_joyL_hor(ds4);
+	y = ds4_get_joyL_ver(ds4);
+	matriz[y + 8][x + 8] = '*';
+	for (i = 0; i < 17; i++)
+	{
+		printf("%s%s%s\n", GREEN, matriz[i], RESET);
+	}
+
+	printf("%s    Right Stick%s\n", BLUE, RESET);
+	for(i = 0; i < 17; i++)
+	{
+		for (j = 0; j < 17; j++)
+		{
+			matriz[i][j] = ' ';
+		}
+		matriz[i][17] = '\0';
+	}
+	matriz[8][8] = '+';
+	x = ds4_get_joyR_hor(ds4);
+	y = ds4_get_joyR_ver(ds4);
+	matriz[y + 8][x + 8] = '*';
+	for (i = 0; i < 17; i++)
+	{
+		printf("%s%s%s\n", GREEN, matriz[i], RESET);
+	}
+	return 0;
+}
+
+int ds4_print_buttons(DS4_CONTROLLER * ds4)
 {
 	char barL2[20], barR2[20];
 	int i;
@@ -416,6 +786,7 @@ int ds4_print_status(DS4_CONTROLLER * ds4)
 		return ERROR;
 	system("clear");
 	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sj0lama%s\n", YELLOW, RESET);
+	printf("%sBUTTONS DEMO%s\n", YELLOW, RESET);
 	printf("ACTION BUTTONS:\n");
 	if(button_pressed(ds4, CROSS) == PRESSED)
 	{

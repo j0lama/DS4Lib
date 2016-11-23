@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -ansi
 
-EXE = ds4_sample
+EXE = ds4_buttons_demo ds4_joysticks_demo
 
 all : $(EXE)
 

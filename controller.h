@@ -26,4 +26,19 @@ int free_controller(controller * c);
 button * controller_get_button(controller * c, int Button);
 
 
+/*Set joystick data*/
+int controller_set_joyL_hor(controller * c, int value);
+int controller_set_joyL_ver(controller * c, int value);
+int controller_set_joyR_hor(controller * c, int value);
+int controller_set_joyR_ver(controller * c, int value);
+
+
+
+/*Get joystick data*/
+int controller_get_joyL_hor(controller * c);
+int controller_get_joyL_ver(controller * c);
+int controller_get_joyR_hor(controller * c);
+int controller_get_joyR_ver(controller * c);
+
+
 #endif
