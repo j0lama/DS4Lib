@@ -52,3 +52,4 @@ Contributors
 
 j0lama: Buttons and Joysticks traking.
 
+s0cKr4te5: Working in TouchPAD tracking.
