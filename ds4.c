@@ -9,6 +9,7 @@
 #include "buttons.h"
 #include "controller.h"
 #include "ds4.h"
+#include "touch_pad.h"
 /*Colors*/
 #define RED   "\x1B[31m"
 #define GREEN   "\x1B[32m"
@@ -84,9 +85,20 @@ int button_pressed(DS4_CONTROLLER * ds4, int Button)
 	c = ds4->c;
 	if(c == NULL)
 		return ERROR;
-	b = controller_get_button(c, Button);
-	if(b == NULL)
+	if(Button == TPAD_CLICK){
+		b = controller_get_tpadclick(c);
+
+	}
+	else if (Button == TPAD_TOUCH)
+	{
+		b = controller_get_tpadtouch(c);
+	}
+	else{
+		b = controller_get_button(c, Button);
+	}
+	if(b == NULL){
 		return ERROR;
+	}
 	return button_get_status(b);
 }
 
@@ -106,15 +118,17 @@ int ds4_get_joyL_ver(DS4_CONTROLLER * ds4)
 
 int ds4_get_joyR_hor(DS4_CONTROLLER * ds4)
 {
-	if(ds4 == NULL || ds4->c == NULL)
+	if(ds4 == NULL || ds4->c == NULL){
 		return ERROR;
+	}
 	return controller_get_joyR_hor(ds4->c);
 }
 
 int ds4_get_joyR_ver(DS4_CONTROLLER * ds4)
 {
-	if(ds4 == NULL || ds4->c == NULL)
+	if(ds4 == NULL || ds4->c == NULL){
 		return ERROR;
+	}
 	return controller_get_joyR_ver(ds4->c);
 }
 
@@ -122,26 +136,33 @@ int ds4_update_status(DS4_CONTROLLER * ds4, char * data)
 {
 	button * b;
 	controller * c;
-	if(ds4 == NULL)
-		return ERROR;
-	c = ds4->c;
-	int button_value, status, type; /*type 1 = common button; type 2 = dpad and other*/
-	unsigned char *rawdata = (unsigned char *)data;
+	int button_value, status, type, coord= 0; /*type 1 = common button; type 2 = dpad and other*/
+	unsigned char *rawdata = NULL;
 	unsigned int trigger, dpad_value1, dpad_value2;
-	if(c == NULL || rawdata == NULL)
+	if(ds4 == NULL){
+		return ERROR;
+	}
+	c = ds4->c;
+	if(c == NULL || data == NULL)
 	{
 		return ERROR;
 	}
-	
+	rawdata = (unsigned char *)data;
 	type = rawdata[6];
 	if(type == 1)/*Common button case*/
 	{
 		status = rawdata[4];
 		button_value = rawdata[7];
-		b = controller_get_button(c, button_value);
-		if(b == NULL)
+		if(button_value == TPAD_CLICK){
+			b = controller_get_tpadclick(c);
+		}
+		else{
+			b = controller_get_button(c, button_value);
+		}
+		if(b == NULL){
 			return ERROR;
-		button_set_status(b, status);
+		}
+		button_set_status(b, status);/*I dont use the ds4-tpad specific functions bc this should work*/
 	}
 	else if(type == 2)
 	{
@@ -723,6 +744,37 @@ int ds4_update_status(DS4_CONTROLLER * ds4, char * data)
 				controller_set_joyR_ver(c, -1);
 			}
 		}
+		/*XAXIS_COORD*/
+		else if(button_value == TPAD_XAXIS){
+			if(rawdata[5]<128){
+				coord = rawdata[5]+128;
+			}
+			else{
+				coord = rawdata[5]-128;
+			}
+			button_set_status(controller_get_tpadtouch(c),PRESSED);
+			controller_set_coordinates(c,XAXIS,coord);
+		}
+		/*YAXIS_COORD*/
+		else if(button_value == TPAD_YAXIS){
+			if(rawdata[5]<128){
+				coord = rawdata[5]+128;
+			}
+			else{
+				coord = rawdata[5]-128;
+			}
+			button_set_status(controller_get_tpadtouch(c),PRESSED);
+			controller_set_coordinates(c,YAXIS,coord);
+		}
+		/*TPAD_TOUCH*/
+		else if(button_value == 11){
+			/*NO NECESITA SABER SI ESTA PRESIONADO PORQUE       */
+			/*YA SE SABE CUANDO SE ACTUALIZAN LAS COORDENADAS   */
+			/*LO QUE IMPORTA ES LA SECUENCIA DE LEVANTAR EL DEDO*/
+			if(rawdata[4]==PRESSED){
+				button_set_status(controller_get_tpadtouch(c),NO_PRESSED);/*ES INVERTIDO A LOS BOTONES NORMALES*/
+			}
+		}
 
 
 	}
@@ -781,11 +833,11 @@ int ds4_print_joysticks(DS4_CONTROLLER * ds4)
 int ds4_print_buttons(DS4_CONTROLLER * ds4)
 {
 	char barL2[20], barR2[20];
-	int i;
+	int i,*coord=NULL;
 	if(ds4 == NULL)
 		return ERROR;
 	system("clear");
-	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sj0lama%s\n", YELLOW, RESET);
+	printf("PS4 CONTROLLER LIBRARY DEVELOPED BY %sj0lama & s0cKrate5%s\n", YELLOW, RESET);
 	printf("%sBUTTONS DEMO%s\n", YELLOW, RESET);
 	printf("ACTION BUTTONS:\n");
 	if(button_pressed(ds4, CROSS) == PRESSED)
@@ -915,6 +967,32 @@ int ds4_print_buttons(DS4_CONTROLLER * ds4)
 	}
 	else
 		printf("      RIGHT %sNOT PRESSED%s\n", RED, RESET);
-
+	
+	/*//////////////////////////////////////
+	//TAPD
+	//////////////////////////////////////*/
+	coord=ds4_get_tpad_coord(ds4);
+	printf("TPAD:\n");
+	printf("LAST COORD: (%d,%d)\n",coord[XAXIS],coord[YAXIS] );
+	if(button_pressed(ds4,TPAD_TOUCH)==PRESSED){
+		printf("TPAD_TOUCH: %sPRESSED%s\n", GREEN, RESET);
+	}
+	else{
+		printf("TPAD_TOUCH: %sNOT PRESSED%s\n", RED, RESET);
+	}
+	if(button_pressed(ds4,TPAD_CLICK)==PRESSED){
+		printf("TPAD_CLICK: %sPRESSED%s\n", GREEN, RESET);
+	}
+	else{
+		printf("TPAD_CLICK: %sNOT PRESSED%s\n", RED, RESET);
+	}
+	/*////////////////////////////////////*/
 	return OK;
+}
+
+int* ds4_get_tpad_coord(DS4_CONTROLLER * ds4){
+	if (ds4 == NULL){
+		return NULL;
+	}
+	return controller_get_tpad_coord(ds4->c);
 }

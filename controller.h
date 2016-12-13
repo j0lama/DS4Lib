@@ -7,7 +7,6 @@
 #ifndef CONTROLLER_H
 #define CONTROLLER_H
 
-#include "buttons.h"
 
 
 typedef struct _controller controller;
@@ -39,6 +38,14 @@ int controller_get_joyL_hor(controller * c);
 int controller_get_joyL_ver(controller * c);
 int controller_get_joyR_hor(controller * c);
 int controller_get_joyR_ver(controller * c);
+
+/*Tpad functions*/
+button* controller_get_tpadclick(controller * c);
+button* controller_get_tpadtouch(controller * c);
+/*2_integer coordinate string, NULL if error*/
+int* controller_get_tpad_coord(controller * c);
+/*Set function*/
+int controller_set_coordinates(controller * c, int axis, int value);
 
 
 #endif

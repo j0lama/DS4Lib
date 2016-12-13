@@ -8,31 +8,9 @@
 #include <stdlib.h>
 #include "buttons.h"
 #include "controller.h"
+#include "touch_pad.h"
+#include "ds4.h"
 
-/*Buttons*/
-#define SQUARE 0
-#define CROSS 1
-#define CIRCLE 2
-#define TRIANGLE 3
-#define L1 4
-#define R1 5
-#define SHARE 8
-#define OPTIONS 9
-#define L3 10
-#define R3 11
-#define PSN 12
-#define UP 21
-#define DOWN 22
-#define LEFT 23
-#define RIGHT 24
-#define L2 30
-#define R2 31
-/*Common button status*/
-#define PRESSED 1
-#define NO_PRESSED 0
-
-#define OK 0
-#define ERROR -1
 
 /*Positions of common buttons in the array of the struct*/
 #define BUTTONS_NUMBER 11
@@ -63,6 +41,7 @@ struct _controller
 	button * trigger[2];
 	button * joystickL[2]; /*0 -> X, 1 -> Y*/
 	button * joystickR[2]; /*0 -> X, 1 -> Y*/
+	touch_pad * tpad;
 };
 
 controller * ini_controller()
@@ -97,6 +76,11 @@ controller * ini_controller()
 	c->joystickR[0] = ini_button(50);
 	c->joystickR[1] = ini_button(51);
 
+	/*TOUCHPAD*/
+	if(!(c->tpad = tpad_ini())){
+		return NULL;
+	}
+
 
 	return c;
 }
@@ -126,6 +110,7 @@ int free_controller(controller * c)
 	{
 		free_button(c->joystickR[i]);
 	}
+	tpad_free(c->tpad);
 	free(c);
 	return OK;
 }
@@ -182,12 +167,37 @@ button * controller_get_button(controller * c, int Button)
 		pos = L2_POS;
 	else if(Button == R2)
 		pos = R2_POS;
-	else
+	else if (Button == TPAD_TOUCH){
+		return controller_get_tpadtouch(c);
+	}
+	else if (Button == TPAD_CLICK){
+		return controller_get_tpadclick(c);
+	}
+	else{
 		return NULL;
+	}
+
 	return c->trigger[pos];
 
 }
 
+/**************************************************
+CONTROLLER FUNCTIONS
+***************************************************/
+button* controller_get_tpadclick(controller * c){
+	if(c == NULL){
+		return NULL;
+	}
+	return tpad_get_click(c->tpad);
+}
+
+button* controller_get_tpadtouch(controller * c){
+	if(c == NULL){
+		return NULL;
+	}
+	return tpad_get_touch(c->tpad);
+
+}
 
 
 
@@ -254,4 +264,27 @@ int controller_get_joyR_ver(controller * c)
 	if(c == NULL)
 		return ERROR;
 	return button_get_status(c->joystickR[1]);
+}
+
+int* controller_get_tpad_coord(controller * c){
+	int * coord=NULL;
+	if(c == NULL){
+		return NULL;
+	}
+	coord = (int*) calloc(2,sizeof(int));
+	if(coord == NULL){
+		return NULL;
+	} 
+	coord[XAXIS]= tpad_get_coordinates(c->tpad,XAXIS);
+	coord[YAXIS]= tpad_get_coordinates(c->tpad,YAXIS);
+
+	return coord;
+}
+
+int controller_set_coordinates(controller * c, int axis, int value){
+	if (c==NULL || (axis != XAXIS && axis != YAXIS) || value > MAX_COORD || value < MIN_COORD){
+		return ERROR;
+	}
+	return tpad_set_coordinates(c->tpad,axis,value);
+
 }
