@@ -36,6 +36,9 @@ This version
 DS4Lib 1.0 adds touchpad tracking. You can get the status of the new pressable buttons (TPAD_CLICK, TPAD_TOUCH) declared in buttons with the usual button_pressed() function. You can also retrieve the coordinates of your finger on the touchpad with 
 the new **'ds4_get_tpad_coord(DS4_CONTROLLER * ds4)'** function.
 
+Touchpad-coordinates: (adjust at your will.
+Take into account touchpad, dimensions (52mmx23mm (external approximately))[source: http://www.psdevwiki.com/ps4/DualShock_4];
+
           x-axis         
   0_ _ _ _ _ _ _ _ _ _ _ _255
   
@@ -58,10 +61,10 @@ In future versions DS4Lib will include tracking of touchPAD and gyroscope/accele
 
 Changelog
 ---------
-DS4Lib 1.0: Add Touchpoad tracking
+DS4Lib 1.0: Adds Touchpad tracking
 
 
-DS4Lib 0.9: Add Joystick tracking.
+DS4Lib 0.9: Adds Joystick tracking.
 
 - Tracking of all buttons and Joysticks.
 
