@@ -57,7 +57,7 @@ Take into account touchpad, dimensions (52mmx23mm (external approximately))[sour
 255_ _ _ _ _ _ _ _ _ _ _ _
 
 
-In future versions DS4Lib will include tracking of touchPAD and gyroscope/accelerometer values in real time.
+In future versions DS4Lib will include tracking of gyroscope/accelerometer values in real time.
 
 Changelog
 ---------
